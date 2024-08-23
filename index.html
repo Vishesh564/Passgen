@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Password Generator</title>
+  <style type="text/css">
+    body{
+      background:linear-gradient(to right, lightsalmon, skyblue);
+      text-align: center;
+    }
+    div input{
+      margin:auto;
+      display:flex;
+      height: 40px;
+      width:300px;
+      border: none;
+      border-radius:8px;
+      font-size: 19px;
+    }
+    div button{
+      margin:3px;
+      display:flex;
+      height: 30px;
+      width:300px;
+      font-size: 25px ;
+      border:none;
+      background-color: white;
+      color:black;
+      border-radius:10px;
+    }
+    button:hover{
+      background-color: green;
+      color:white;
+    }
+  .box{
+    background:transparent;
+    box-shadow: 0px 0px 8px black;
+    width:325px;
+    border-radius:10px;
+    margin:auto;
+  }
+    .checkbox{
+      margin:auto;
+      display:coflex;
+      padding:none;
+      font-family: 'Times New Roman', Times, serif;
+      font-size:20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="cont">
+  <div class="input" id="input">
+    <h1 style="font-family:cursive">Password Generator</h1>
+    <hr style="width:300px">
+    <input type="text" readonly id="pass" placeholder="Password">
+    <input type ="range" min="1" max="20" value="8" id="slider">
+    <p>Password Length:  <span id="sliderValue"></span></p>
+  </div>
+    <hr style="width:300px">
+    <h4>Select Atleast two Options</h4>
+    <div class="checkbox" id="cb">
+        <input type="checkbox" id="lcase">
+        <label for="check1">Include Uppercase</label>
+      <hr style="width:300px">
+        <input type="checkbox" id="ucase">
+        <label for="check2">Include Lowercase</label>
+      <hr style="width:300px">
+        <input type="checkbox" id="numcase">
+        <label for="check3">Include Numbers</label>
+      <hr style="width:300px">
+        <input type="checkbox" id="scase">
+        <label for="check4">Include Symbols</label>
+    </div>
+  <hr style="width:300px">
+  <div class="button" id="button">
+    <button id="btn">Generate Password</button>
+    <button id="clr">Clear All</button>
+    <button id="copy">Copy Password</button>
+  </div>
+  </div>
+  <script type="text/javascript">
+    let slider = document.getElementById("slider");
+    let sliderValue = document.getElementById("sliderValue");
+    sliderValue.textContent = slider.value;
+    slider.addEventListener("input",()=>{
+      sliderValue.textContent = slider.value;
+    })
+    let pass = document.getElementById("pass");
+    let uppercase = document.getElementById("lcase");
+    let lowercase = document.getElementById("ucase");
+    let numbers = document.getElementById("numcase");
+    let symbols = document.getElementById("scase");
+    let btn = document.getElementById("btn");
+
+    btn.addEventListener('click',()=>{
+      pass.value = generatePassword();
+    });
+    let lochars = "abcdefghijklmnopqrstuvwxyz";
+    let upchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let num = "0123456789";
+    let sym = "!@#$%^&*()_<>{}[]€£+";
+    function generatePassword(){
+      let genPass = "";
+      let allChars ="";
+
+      allChars += lowercase.checked ? lochars : "";
+      allChars += uppercase.checked ? upchars : "";
+      allChars += numbers.checked ? num : "";
+      allChars += symbols.checked ? sym : "";
+
+      if(allChars == ""|| allChars.length == 0){
+        return genPass;
+      }
+      
+      let i = 1;
+      while(i<=slider.value){
+        genPass += allChars.charAt(Math.floor(Math.random()*allChars.length));
+        i++;
+      }
+      return genPass;
+    }
+    document.getElementById("clr").addEventListener("click", function(){
+      pass.value = "";
+      slider.value = 8;
+      uppercase.checked = false;
+      lowercase.checked = false;
+      numbers.checked = false;
+      symbols.checked = false;
+    });
+    document.getElementById("copy").addEventListener("click",function(){
+      navigator.clipboard.writeText(pass.value);
+      alert("Password Copied");
+    });
+  </script>
+</body>
+
+</html>
